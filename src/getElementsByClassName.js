@@ -17,10 +17,10 @@ var getElementsByClassName = function(className) {
     if (element.hasChildNodes()) {
       _.each(element.childNodes, function(node) {
         innerFunction(node);
-      })
+      });
     } 
     return;
-  }
+  };
 
   innerFunction(body);
 

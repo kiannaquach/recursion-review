@@ -3,40 +3,74 @@
 
 // but you're not, so you'll write it from scratch:
 var parseJSON = function(json) {
-  var firstChar = json[0];
-  console.log('firstChar', firstChar);
-  var index = 1;
+  var index = 0;
 
+  const innerFunction = function(json) {
+    
+    if (json[index] === ' ') {      
+      index++;
+    }
 
-  const innerFunction = function(json){
-    console.log(json[index]);
+    var firstChar = json[index];
+
     if (firstChar === '"') {
       let str = '';
-      if(json[index] === '"') {
-        return str;
-      } else {
-        str += json[index];
-      }
       index++;
+      while (json[index] !== '"') {
+        str += json[index];
+        index++;
+      }
+      return str;
+    }
+
+    if (/[-\.0-9]/.test(firstChar)) {
+      let str = '';
+ 
+      while (json[index] !== /[-\.0-9]/) {
+        str += json[index];
+        index++;
+      }
+      
+      return Number(str);
+    }
+
+    if (firstChar === 't') {
+      index += 4;
+      return true;
+    }
+
+    if (firstChar === 'n') {
+      index += 4;
+      return null;
+    }
+
+    if (firstChar === 'f') {
+      index += 5;
+      return false;
     }
 
     if (firstChar === '[') {
       index++;
       let arr = [];
-      while(json[index] !== ']') {
-        arr.push(innerFunction(json))
+      while (json[index] !== ']') {
+        if (json[index] === ',') { 
+          index++; 
+        }  
+        // console.log(json[index])
+        arr.push(innerFunction(json));
+        index++;
       }
       return arr; 
     }
 
-    if (firstChar === '{') {
-    }
+    // if (firstChar === '{') {
+    // }
 
-    if (/[0-9]/.test(firstChar)) {
-      //do stuff
-    }
     // if (firstChar === 't') {
     // }
-  }
-  return innerFunction(json);
+  };
+
+  let result = innerFunction(json);
+  console.log(result);
+  return result;
 };

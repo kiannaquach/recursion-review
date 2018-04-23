@@ -22,14 +22,14 @@ var stringifyJSON = function(obj) {
   }
 
   if (typeof obj === 'string') {
-    return '"' + obj + '"'
+    return '"' + obj + '"';
   }
   
   if (Array.isArray(obj)) {
     var arrayResult = [];
     obj.forEach(function(item) {
       arrayResult.push(stringifyJSON(item));
-    })
+    });
     
     return '[' + arrayResult + ']';
 
